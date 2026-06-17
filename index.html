@@ -21,40 +21,52 @@ const URLS = {
      END URL CONFIGURATION
      ============================================================ -->
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
 <style>
   /* ─── Reset & Base ─── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy:    #050d1a;
-    --dark:    #0a1628;
-    --mid:     #0e2040;
-    --blue:    #0f3460;
-    --cyan:    #00c8e0;
-    --cyan2:   #00e5ff;
-    --accent:  #1de9b6;
-    --warn:    #ff6b35;
-    --glass:   rgba(255,255,255,0.05);
-    --glass-b: rgba(0,200,224,0.12);
-    --border:  rgba(0,200,224,0.2);
-    --text:    #e2eaf4;
-    --muted:   #6b8cae;
-    --radius:  16px;
-    --shadow:  0 8px 32px rgba(0,0,0,0.4);
+    /* Bright industrial / blueprint-paper palette */
+    --paper:    #F6F4EC;   /* main bright background */
+    --paper2:   #EFEBDD;   /* secondary panel tone */
+    --ink:      #16202E;   /* primary text, near-navy */
+    --ink-soft: #4B5A6B;   /* muted text */
+    --steel:    #0E7C86;   /* teal-steel accent */
+    --steel-d:  #0A5A62;   /* darker steel for hover */
+    --amber:    #FF9F1C;   /* hazard amber accent */
+    --amber-d:  #E08600;
+    --alert:    #E0483E;   /* warning red */
+    --line:     rgba(22,32,46,0.14);
+    --line-soft:rgba(22,32,46,0.08);
+    --card-bg:  #FFFDF6;
+    --shadow:   0 10px 30px rgba(22,32,46,0.10);
+    --shadow-lg:0 18px 44px rgba(22,32,46,0.16);
+    --radius:   14px;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --display: 'Oswald', 'Segoe UI', sans-serif;
+    --body: 'Work Sans', 'Segoe UI', sans-serif;
   }
 
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--navy);
-    color: var(--text);
+    font-family: var(--body);
+    background: var(--paper);
+    color: var(--ink);
     min-height: 100vh;
     overflow-x: hidden;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 36px 36px;
   }
 
-  /* ─── Particle Canvas ─── */
-  #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  /* ─── Particle Canvas (drifting dust, subtle on bright bg) ─── */
+  #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.55; }
 
   /* ─── Layout Shell ─── */
   .shell { position: relative; z-index: 1; }
@@ -65,9 +77,9 @@ const URLS = {
     align-items: center;
     justify-content: space-between;
     padding: 14px 28px;
-    background: rgba(5,13,26,0.85);
-    border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(12px);
+    background: rgba(246,244,236,0.88);
+    border-bottom: 2px solid var(--ink);
+    backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -79,213 +91,125 @@ const URLS = {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: var(--cyan);
+    font-family: var(--display);
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink);
     text-transform: uppercase;
   }
 
   .topbar-logo svg { flex-shrink: 0; }
 
-  .topbar-nav {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .nav-btn {
-    padding: 7px 16px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--glass);
-    color: var(--muted);
-    font-size: 0.78rem;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.25s;
-    letter-spacing: 0.04em;
-  }
-
-  .nav-btn:hover {
-    background: var(--glass-b);
-    color: var(--cyan);
-    border-color: var(--cyan);
-  }
-
   .clock-pill {
-    background: var(--glass-b);
-    border: 1px solid var(--border);
-    border-radius: 50px;
-    padding: 6px 16px;
+    background: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 7px 16px;
+    font-family: var(--mono);
     font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--cyan2);
-    letter-spacing: 0.05em;
+    font-weight: 700;
+    color: var(--amber);
+    letter-spacing: 0.04em;
     white-space: nowrap;
-    min-width: 190px;
+    min-width: 200px;
     text-align: center;
   }
 
   /* ─── Hero ─── */
   .hero {
     text-align: center;
-    padding: 72px 24px 48px;
-    background: linear-gradient(180deg, #0a1628 0%, #050d1a 100%);
+    padding: 68px 24px 40px;
     position: relative;
     overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 40% at 20% 40%, rgba(0,200,224,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 60%, rgba(29,233,182,0.07) 0%, transparent 60%);
-    pointer-events: none;
   }
 
   .hero-eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.72rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.18em;
-    color: var(--cyan);
+    letter-spacing: 0.16em;
+    color: var(--steel-d);
     text-transform: uppercase;
-    margin-bottom: 20px;
-    background: rgba(0,200,224,0.08);
-    border: 1px solid rgba(0,200,224,0.3);
+    margin-bottom: 22px;
+    background: rgba(14,124,134,0.08);
+    border: 1px solid rgba(14,124,134,0.35);
     padding: 6px 16px;
     border-radius: 50px;
   }
 
   .hero-eyebrow span.dot {
-    width: 6px; height: 6px;
+    width: 7px; height: 7px;
     border-radius: 50%;
-    background: var(--cyan);
+    background: var(--steel);
     animation: pulse-dot 1.5s ease-in-out infinite;
   }
 
   @keyframes pulse-dot {
     0%,100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.7); }
+    50% { opacity: 0.35; transform: scale(0.7); }
   }
 
   .hero h1 {
-    font-size: clamp(1.8rem, 5vw, 3.4rem);
-    font-weight: 800;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    margin-bottom: 18px;
-    background: linear-gradient(135deg, #ffffff 30%, var(--cyan) 70%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: var(--display);
+    font-size: clamp(2rem, 5.4vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+    color: var(--ink);
+    text-transform: uppercase;
   }
 
+  .hero h1 .accent { color: var(--steel); }
+
   .hero-sub {
-    font-size: clamp(0.9rem, 2.2vw, 1.15rem);
-    color: var(--muted);
-    max-width: 560px;
-    margin: 0 auto 36px;
+    font-size: clamp(0.92rem, 2.1vw, 1.1rem);
+    color: var(--ink-soft);
+    max-width: 580px;
+    margin: 0 auto 30px;
     line-height: 1.65;
   }
 
   .hero-rule {
-    width: 80px;
-    height: 3px;
-    background: linear-gradient(90deg, var(--cyan), var(--accent));
-    border-radius: 4px;
-    margin: 0 auto 0;
-  }
-
-  /* ─── Stats Row ─── */
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 16px;
-    padding: 32px 28px;
-    max-width: 1200px;
+    width: 90px;
+    height: 4px;
+    background: var(--amber);
     margin: 0 auto;
-  }
-
-  .stat-card {
-    background: var(--glass);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px 18px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s, border-color 0.3s;
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  .stat-card.visible {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s;
-  }
-
-  .stat-card:hover {
-    border-color: var(--cyan);
-    box-shadow: 0 0 24px rgba(0,200,224,0.15);
-    transform: translateY(-3px);
-  }
-
-  .stat-icon {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    background: var(--glass-b);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 12px;
-  }
-
-  .stat-value {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: var(--cyan);
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-
-  .stat-label {
-    font-size: 0.75rem;
-    color: var(--muted);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
   }
 
   /* ─── Section Title ─── */
   .section-title {
     text-align: center;
-    padding: 12px 28px 0;
+    padding: 36px 28px 0;
     max-width: 1200px;
     margin: 0 auto;
   }
 
   .section-title h2 {
-    font-size: clamp(1.2rem, 3vw, 1.7rem);
-    font-weight: 700;
-    color: var(--text);
+    font-family: var(--display);
+    font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+    font-weight: 600;
+    color: var(--ink);
     margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 
   .section-title p {
-    font-size: 0.88rem;
-    color: var(--muted);
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    font-family: var(--mono);
   }
 
-  /* ─── Module Cards Grid ─── */
+  /* ─── Module Cards Grid (work-order tag styling) ─── */
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 22px;
     padding: 28px 28px 8px;
     max-width: 1200px;
     margin: 0 auto;
@@ -301,110 +225,94 @@ const URLS = {
 
   .mod-card {
     position: relative;
-    background: linear-gradient(145deg, rgba(14,32,64,0.9), rgba(5,13,26,0.95));
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 32px 26px 28px;
+    background: var(--card-bg);
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    padding: 30px 24px 26px;
     cursor: pointer;
     text-decoration: none;
-    color: var(--text);
+    color: var(--ink);
     display: flex;
     flex-direction: column;
     gap: 14px;
     overflow: hidden;
-    transition: transform 0.3s cubic-bezier(.22,.68,0,1.5), box-shadow 0.3s, border-color 0.3s;
+    transition: transform 0.3s cubic-bezier(.22,.68,0,1.3), box-shadow 0.3s, border-color 0.3s;
     opacity: 0;
-    transform: translateY(30px) scale(0.97);
-    backdrop-filter: blur(16px);
+    transform: translateY(26px);
+    box-shadow: var(--shadow);
   }
 
   .mod-card.visible {
     opacity: 1;
-    transform: translateY(0) scale(1);
-    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(.22,.68,0,1.2),
-                box-shadow 0.3s, border-color 0.3s;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(.22,.68,0,1.15), box-shadow 0.3s, border-color 0.3s;
   }
 
+  /* Perforated top edge — tag motif */
   .mod-card::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--cyan) 0%, var(--accent) 100%);
-    opacity: 0;
-    transition: opacity 0.3s;
-    border-radius: inherit;
-    z-index: 0;
+    top: -1px; left: 0; right: 0;
+    height: 14px;
+    background-image: radial-gradient(circle 4px, var(--paper) 4px, transparent 4.5px);
+    background-size: 22px 14px;
+    background-position: 11px 0;
+    background-repeat: repeat-x;
+    z-index: 2;
   }
 
   .mod-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    border-color: var(--cyan);
-    box-shadow: 0 16px 48px rgba(0,200,224,0.22), 0 0 0 1px rgba(0,200,224,0.3);
+    transform: translateY(-6px);
+    border-color: var(--steel);
+    box-shadow: var(--shadow-lg);
   }
 
-  .mod-card:hover::before { opacity: 0.06; }
-
-  .mod-card > * { position: relative; z-index: 1; }
-
-  /* Shimmer on hover */
-  .mod-card::after {
-    content: '';
-    position: absolute;
-    top: -60%;
-    left: -60%;
-    width: 50%;
-    height: 200%;
-    background: linear-gradient(105deg, transparent, rgba(255,255,255,0.07), transparent);
-    transform: rotate(25deg) translateX(-100%);
-    transition: transform 0.5s ease;
-    z-index: 0;
-  }
-
-  .mod-card:hover::after {
-    transform: rotate(25deg) translateX(500%);
+  .tag-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 6px;
   }
 
   .card-icon-wrap {
-    width: 60px; height: 60px;
-    border-radius: 16px;
+    width: 56px; height: 56px;
+    border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    position: relative;
     flex-shrink: 0;
+    border: 2px solid var(--ink);
   }
 
-  .card-icon-wrap::after {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 17px;
-    padding: 1px;
-    background: linear-gradient(135deg, var(--cyan), var(--accent));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+  .status-badge {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 3px;
+    border: 1.5px solid currentColor;
+    transform: rotate(-4deg);
+    transition: transform 0.25s;
   }
 
-  .card-num {
-    position: absolute;
-    top: 20px; right: 20px;
-    font-size: 3.5rem;
-    font-weight: 900;
-    color: rgba(255,255,255,0.035);
-    line-height: 1;
-    pointer-events: none;
-    font-variant-numeric: tabular-nums;
-  }
+  .mod-card:hover .status-badge { transform: rotate(0deg) scale(1.04); }
+
+  .status-badge.live  { color: var(--steel-d); }
+  .status-badge.soon  { color: var(--ink-soft); border-color: var(--ink-soft); }
 
   .card-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 4px;
+    font-family: var(--display);
+    font-size: 1.18rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
   }
 
   .card-desc {
     font-size: 0.82rem;
-    color: var(--muted);
+    color: var(--ink-soft);
     line-height: 1.55;
     flex: 1;
   }
@@ -413,12 +321,14 @@ const URLS = {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.78rem;
+    font-family: var(--mono);
+    font-size: 0.74rem;
     font-weight: 700;
-    color: var(--cyan);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-top: 6px;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
   }
 
   .card-cta svg { transition: transform 0.2s; }
@@ -428,92 +338,47 @@ const URLS = {
   .ripple {
     position: absolute;
     border-radius: 50%;
-    background: rgba(0,200,224,0.3);
+    background: rgba(14,124,134,0.22);
     transform: scale(0);
     animation: ripple-anim 0.6s linear;
     pointer-events: none;
-    z-index: 2;
+    z-index: 3;
   }
 
   @keyframes ripple-anim {
     to { transform: scale(4); opacity: 0; }
   }
 
-  /* ─── System Status ─── */
-  .status-section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 32px 28px 8px;
-  }
-
-  .status-section h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .status-section h3::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .status-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-  }
-
-  .status-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--glass);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .status-dot {
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-    box-shadow: 0 0 8px var(--accent);
-    animation: online-pulse 2.5s ease-in-out infinite;
-  }
-
-  @keyframes online-pulse {
-    0%,100% { box-shadow: 0 0 4px var(--accent); }
-    50% { box-shadow: 0 0 14px var(--accent); }
-  }
-
   /* ─── Footer ─── */
   footer {
     text-align: center;
-    padding: 28px 24px;
-    border-top: 1px solid var(--border);
-    margin-top: 48px;
-    color: var(--muted);
+    padding: 30px 24px;
+    border-top: 2px solid var(--ink);
+    margin-top: 52px;
+    color: var(--ink-soft);
     font-size: 0.78rem;
     line-height: 1.8;
+    font-family: var(--mono);
   }
 
-  footer strong { color: var(--cyan); }
+  footer strong { color: var(--steel-d); }
 
   /* ─── Scrollbar ─── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--dark); }
-  ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+  ::-webkit-scrollbar { width: 7px; }
+  ::-webkit-scrollbar-track { background: var(--paper2); }
+  ::-webkit-scrollbar-thumb { background: var(--ink-soft); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--steel); }
+
+  /* ─── Reduced motion ─── */
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  /* ─── Keyboard focus visibility ─── */
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--steel);
+    outline-offset: 2px;
+  }
 </style>
 </head>
 <body>
@@ -526,18 +391,27 @@ const URLS = {
   <header class="topbar">
     <div class="topbar-logo">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-        <rect width="28" height="28" rx="8" fill="rgba(0,200,224,0.15)"/>
-        <path d="M5 19 L9 11 L14 17 L18 9 L23 19" stroke="#00c8e0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <circle cx="14" cy="21" r="2" fill="#1de9b6"/>
+        <rect width="28" height="28" rx="6" fill="var(--ink)"/>
+        <path d="M5 19 L9 11 L14 17 L18 9 L23 19" stroke="#FF9F1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="14" cy="21.5" r="1.8" fill="#0E7C86"/>
       </svg>
       Automobile &mdash; XiC
     </div>
     <div class="clock-pill" id="clock">Loading…</div>
   </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-eyebrow"><span class="dot"></span>Fleet Operations Control</div>
+    <h1>Fleet Maintenance<br><span class="accent">Management System</span></h1>
+    <p class="hero-sub">A single point of entry to every consumption and overhaul module running across the fleet — pick a tag below to open it.</p>
+    <div class="hero-rule"></div>
+  </section>
+
   <!-- ── Section Title ── -->
   <div class="section-title">
     <h2>Maintenance Modules</h2>
-    <p>Select a module to open its management system</p>
+    <p>// select a tag to open its tracking system</p>
   </div>
 
   <!-- ── Module Cards ── -->
@@ -545,16 +419,18 @@ const URLS = {
 
     <!-- Filter Consumption -->
     <a class="mod-card" href="#" onclick="navigate(event,'filterConsumption')">
-      <span class="card-num">01</span>
-      <div class="card-icon-wrap" style="background:rgba(0,200,224,0.12)">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00c8e0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
-        </svg>
+      <div class="tag-row">
+        <div class="card-icon-wrap" style="background:rgba(14,124,134,0.10)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E7C86" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+          </svg>
+        </div>
+        <span class="status-badge live">Active</span>
       </div>
       <div>
         <div class="card-title">Filter Consumption</div>
       </div>
-      <div class="card-cta">
+      <div class="card-cta" style="color:#0E7C86">
         Open Module
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </div>
@@ -562,17 +438,19 @@ const URLS = {
 
     <!-- Oil Consumption -->
     <a class="mod-card" href="#" onclick="navigate(event,'oilConsumption')">
-      <span class="card-num">02</span>
-      <div class="card-icon-wrap" style="background:rgba(255,193,7,0.12)">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          <path d="M8 12 c0-2.21 1.79-4 4-4" stroke-dasharray="2 2"/>
-        </svg>
+      <div class="tag-row">
+        <div class="card-icon-wrap" style="background:rgba(255,159,28,0.12)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E08600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            <path d="M8 12 c0-2.21 1.79-4 4-4" stroke-dasharray="2 2"/>
+          </svg>
+        </div>
+        <span class="status-badge live" style="color:#E08600">Active</span>
       </div>
       <div>
         <div class="card-title">Oil Consumption</div>
       </div>
-      <div class="card-cta" style="color:#ffc107">
+      <div class="card-cta" style="color:#E08600">
         Open Module
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </div>
@@ -580,18 +458,20 @@ const URLS = {
 
     <!-- Battery Consumption -->
     <a class="mod-card" href="#" onclick="navigate(event,'batteryConsumption')">
-      <span class="card-num">03</span>
-      <div class="card-icon-wrap" style="background:rgba(29,233,182,0.12)">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1de9b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="7" width="18" height="11" rx="2"/>
-          <path d="M22 11v3M7 12h10"/>
-          <path d="M11 10v4"/>
-        </svg>
+      <div class="tag-row">
+        <div class="card-icon-wrap" style="background:rgba(224,72,62,0.10)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E0483E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="18" height="11" rx="2"/>
+            <path d="M22 11v3M7 12h10"/>
+            <path d="M11 10v4"/>
+          </svg>
+        </div>
+        <span class="status-badge soon">Pending</span>
       </div>
       <div>
         <div class="card-title">Battery Consumption</div>
       </div>
-      <div class="card-cta" style="color:#1de9b6">
+      <div class="card-cta" style="color:#E0483E">
         Open Module
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </div>
@@ -599,21 +479,23 @@ const URLS = {
 
     <!-- Tyre Consumption -->
     <a class="mod-card" href="#" onclick="navigate(event,'tyreConsumption')">
-      <span class="card-num">04</span>
-      <div class="card-icon-wrap" style="background:rgba(156,39,176,0.15)">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ce93d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="4"/>
-          <line x1="12" y1="2" x2="12" y2="8"/>
-          <line x1="12" y1="16" x2="12" y2="22"/>
-          <line x1="2" y1="12" x2="8" y2="12"/>
-          <line x1="16" y1="12" x2="22" y2="12"/>
-        </svg>
+      <div class="tag-row">
+        <div class="card-icon-wrap" style="background:rgba(22,32,46,0.08)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16202E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="4"/>
+            <line x1="12" y1="2" x2="12" y2="8"/>
+            <line x1="12" y1="16" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="8" y2="12"/>
+            <line x1="16" y1="12" x2="22" y2="12"/>
+          </svg>
+        </div>
+        <span class="status-badge soon">Pending</span>
       </div>
       <div>
         <div class="card-title">Tyre Consumption</div>
       </div>
-      <div class="card-cta" style="color:#ce93d8">
+      <div class="card-cta" style="color:#16202E">
         Open Module
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </div>
@@ -621,24 +503,24 @@ const URLS = {
 
     <!-- Engine Overhauling -->
     <a class="mod-card" href="#" onclick="navigate(event,'engineOverhauling')">
-      <span class="card-num">05</span>
-      <div class="card-icon-wrap" style="background:rgba(255,107,53,0.12)">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff6b35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-        </svg>
+      <div class="tag-row">
+        <div class="card-icon-wrap" style="background:rgba(255,159,28,0.12)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF9F1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <span class="status-badge soon">Pending</span>
       </div>
       <div>
         <div class="card-title">Engine Overhauling</div>
       </div>
-      <div class="card-cta" style="color:#ff6b35">
+      <div class="card-cta" style="color:#E08600">
         Open Module
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </div>
     </a>
 
   </div>
-
-
 
   <!-- ── Footer ── -->
   <footer>
@@ -689,53 +571,31 @@ function navigate(e, key) {
   setTimeout(() => ripple.remove(), 620);
 }
 
-// ─── Animated Counters ───────────────────────────────────
-function animateCounter(el, target, suffix, duration) {
-  const start = performance.now();
-  const update = (time) => {
-    const progress = Math.min((time - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.round(ease * target) + suffix;
-    if (progress < 1) requestAnimationFrame(update);
-  };
-  requestAnimationFrame(update);
-}
-
-// ─── Intersection Observer ───────────────────────────────
+// ─── Intersection Observer (card reveal) ─────────────────
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
       const el = entry.target;
       setTimeout(() => {
         el.classList.add('visible');
-        // Stat counters
-        const count = el.dataset.count;
-        const suffix = el.dataset.suffix || '';
-        if (count) {
-          const valEl = el.querySelector('.stat-value');
-          if (valEl) animateCounter(valEl, parseInt(count), suffix, 1200);
-        }
       }, parseInt(el.dataset.delay || 0));
       observer.unobserve(el);
     }
   });
 }, { threshold: 0.15 });
 
-document.querySelectorAll('.stat-card').forEach((c, i) => {
-  c.dataset.delay = i * 100;
-  observer.observe(c);
-});
-
 document.querySelectorAll('.mod-card').forEach((c, i) => {
   c.dataset.delay = i * 80;
   observer.observe(c);
 });
 
-// ─── Particles ───────────────────────────────────────────
+// ─── Particles (subtle dust motes for bright background) ─
 (function () {
   const canvas = document.getElementById('particles');
   const ctx = canvas.getContext('2d');
   let W, H, particles = [];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
 
   function resize() {
     W = canvas.width = window.innerWidth;
@@ -749,12 +609,12 @@ document.querySelectorAll('.mod-card').forEach((c, i) => {
   Particle.prototype.reset = function () {
     this.x = Math.random() * W;
     this.y = Math.random() * H;
-    this.r = Math.random() * 1.5 + 0.3;
-    this.vx = (Math.random() - 0.5) * 0.35;
-    this.vy = (Math.random() - 0.5) * 0.35;
-    this.a = Math.random() * 0.4 + 0.08;
-    const teal = Math.random() > 0.5;
-    this.color = teal ? `rgba(0,200,224,${this.a})` : `rgba(29,233,182,${this.a})`;
+    this.r = Math.random() * 1.4 + 0.4;
+    this.vx = (Math.random() - 0.5) * 0.22;
+    this.vy = (Math.random() - 0.5) * 0.22;
+    this.a = Math.random() * 0.22 + 0.05;
+    const steel = Math.random() > 0.5;
+    this.color = steel ? `rgba(14,124,134,${this.a})` : `rgba(22,32,46,${this.a})`;
   };
 
   Particle.prototype.update = function () {
@@ -773,17 +633,17 @@ document.querySelectorAll('.mod-card').forEach((c, i) => {
       ctx.fill();
     });
 
-    // Draw faint connecting lines
+    // Faint connecting lines, subtle on bright background
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 110) {
+        if (dist < 100) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(0,200,224,${0.06 * (1 - dist / 110)})`;
+          ctx.strokeStyle = `rgba(22,32,46,${0.035 * (1 - dist / 100)})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
@@ -793,7 +653,7 @@ document.querySelectorAll('.mod-card').forEach((c, i) => {
   }
 
   resize();
-  for (let i = 0; i < 70; i++) particles.push(new Particle());
+  for (let i = 0; i < 55; i++) particles.push(new Particle());
   window.addEventListener('resize', resize);
   draw();
 })();
