@@ -14,9 +14,10 @@ const URLS = {
   oilConsumption:     "https://script.google.com/macros/s/AKfycbw7YBrP0CUrq2Mj81jTpGpbo-cB3l_biWHoaVY9tN-ZC7CNuAW0e0yBm6CMjyZLR0GR/exec",
   batteryConsumption: "https://script.google.com/macros/s/AKfycbyPJO5uXNadaVx4P8E-r2oEgSLudf9nYwsQnpm1LxWBMcbzBY-T5dY48aDGIJ64cvr_/exec",
   tyreConsumption:    "https://script.google.com/macros/s/AKfycbwK9ulEFbB3km02sgb-GJo35lJaf_Sks4tCDwHU6In4VVo6UU_gbka4zj-AJGvb0_Ig/exec",
-     status:    "https://script.google.com/macros/s/AKfycbzMKby88CPFxhuVY9jDdXY1jlgLLvKie9v6ye7z03Hco_K4vvPpAH08b4H4ey4UOz7E/exec",
-  engineOverhauling:  "https://script.google.com/macros/s/AKfycbyez14wpPFBkqSl4SxS2GPsBaCAEWHlHDtHuEJZJ8pyfXp-Udt-pIGZTlivGii-tA4H/exec"
-     
+  status:             "https://script.google.com/macros/s/AKfycbzMKby88CPFxhuVY9jDdXY1jlgLLvKie9v6ye7z03Hco_K4vvPpAH08b4H4ey4UOz7E/exec",
+  engineOverhauling:  "https://script.google.com/macros/s/AKfycbyez14wpPFBkqSl4SxS2GPsBaCAEWHlHDtHuEJZJ8pyfXp-Udt-pIGZTlivGii-tA4H/exec",
+  vehicleStatus:      "https://script.google.com/macros/s/AKfycbyHSYHwd6HYDypAs3vmQaxHqY0GkrXA4bTRW5pZG5TE3j5anFDzi9BPcORQQDE9LkK2Sw/exec",
+  mechanicHistory:    "#"
 };
 </script>
 <!-- ============================================================
@@ -28,25 +29,16 @@ const URLS = {
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-  /* ─── Reset & Base ─── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    /* Bright industrial / blueprint-paper palette */
-    --paper:    #F6F4EC;   /* main bright background */
-    --paper2:   #EFEBDD;   /* secondary panel tone */
-    --ink:      #16202E;   /* primary text, near-navy */
-    --ink-soft: #4B5A6B;   /* muted text */
-    --steel:    #0E7C86;   /* teal-steel accent */
-    --steel-d:  #0A5A62;   /* darker steel for hover */
-    --amber:    #FF9F1C;   /* hazard amber accent */
-    --amber-d:  #E08600;
-    --alert:    #E0483E;   /* warning red */
-    --line:     rgba(22,32,46,0.14);
-    --line-soft:rgba(22,32,46,0.08);
+    --paper:    #F6F4EC;
+    --ink:      #16202E;
+    --ink-soft: #4B5A6B;
+    --steel:    #0E7C86;
     --card-bg:  #FFFDF6;
-    --shadow:   0 10px 30px rgba(22,32,46,0.10);
-    --shadow-lg:0 18px 44px rgba(22,32,46,0.16);
+    --shadow:   0 6px 16px rgba(22,32,46,0.10);
+    --shadow-lg:0 10px 24px rgba(22,32,46,0.16);
     --radius:   14px;
     --mono: 'JetBrains Mono', 'Courier New', monospace;
     --display: 'Oswald', 'Segoe UI', sans-serif;
@@ -61,32 +53,35 @@ const URLS = {
     color: var(--ink);
     min-height: 100vh;
     overflow-x: hidden;
-    background-image:
-      linear-gradient(var(--line-soft) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
-    background-size: 36px 36px;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* ─── Particle Canvas (drifting dust, subtle on bright bg) ─── */
-  #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.55; }
-
-  /* ─── Layout Shell ─── */
-  .shell { position: relative; z-index: 1; }
+  .shell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 18px 14px 12px;
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+  }
 
   /* ─── Top Bar ─── */
   .topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 28px;
+    padding: 12px 14px;
     background: rgba(246,244,236,0.88);
     border-bottom: 2px solid var(--ink);
-    backdrop-filter: blur(10px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    gap: 12px;
+    border-radius: 10px 10px 0 0;
+    gap: 10px;
     flex-wrap: wrap;
+    margin: 0 -14px;
+    padding-left: 14px;
+    padding-right: 14px;
   }
 
   .topbar-logo {
@@ -94,7 +89,7 @@ const URLS = {
     align-items: center;
     gap: 10px;
     font-family: var(--display);
-    font-size: 0.92rem;
+    font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     color: var(--ink);
@@ -107,47 +102,42 @@ const URLS = {
     background: var(--ink);
     border: 2px solid var(--ink);
     border-radius: 4px;
-    padding: 7px 16px;
+    padding: 7px 14px;
     font-family: var(--mono);
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    color: var(--amber);
-    letter-spacing: 0.04em;
+    color: #FF9F1C;
+    letter-spacing: 0.02em;
     white-space: nowrap;
-    min-width: 200px;
     text-align: center;
   }
 
-  /* ─── Hero ─── */
-  .hero {
-    text-align: center;
-    padding: 68px 24px 40px;
-    position: relative;
-    overflow: hidden;
-  }
-
+  /* ─── Hero Eyebrow (Fleet Operations Control) ─── */
   .hero-eyebrow {
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     font-family: var(--mono);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
-    color: var(--steel-d);
+    letter-spacing: 0.14em;
+    color: #0A5A62;
     text-transform: uppercase;
-    margin-bottom: 22px;
+    margin: 18px auto 16px;
     background: rgba(14,124,134,0.08);
     border: 1px solid rgba(14,124,134,0.35);
     padding: 6px 16px;
     border-radius: 50px;
+    width: fit-content;
   }
 
-  .hero-eyebrow span.dot {
+  .hero-eyebrow .dot {
     width: 7px; height: 7px;
     border-radius: 50%;
     background: var(--steel);
     animation: pulse-dot 1.5s ease-in-out infinite;
+    flex-shrink: 0;
   }
 
   @keyframes pulse-dot {
@@ -155,186 +145,85 @@ const URLS = {
     50% { opacity: 0.35; transform: scale(0.7); }
   }
 
-  .hero h1 {
-    font-family: var(--display);
-    font-size: clamp(2rem, 5.4vw, 3.6rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-    margin-bottom: 16px;
-    color: var(--ink);
-    text-transform: uppercase;
-  }
-
-  .hero h1 .accent { color: var(--steel); }
-
-  .hero-sub {
-    font-size: clamp(0.92rem, 2.1vw, 1.1rem);
-    color: var(--ink-soft);
-    max-width: 580px;
-    margin: 0 auto 30px;
-    line-height: 1.65;
-  }
-
-  .hero-rule {
-    width: 90px;
-    height: 4px;
-    background: var(--amber);
-    margin: 0 auto;
-  }
-
-  /* ─── Section Title ─── */
-  .section-title {
-    text-align: center;
-    padding: 36px 28px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-title h2 {
-    font-family: var(--display);
-    font-size: clamp(1.1rem, 2.6vw, 1.5rem);
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  .section-title p {
-    font-size: 0.86rem;
-    color: var(--ink-soft);
-    font-family: var(--mono);
-  }
-
-  /* ─── Module Cards Grid (work-order tag styling) ─── */
+  /* ─── Cards Grid: fixed 4 columns, rows auto-adjust ─── */
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 22px;
-    padding: 28px 28px 8px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  @media (max-width: 900px) {
-    .cards-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (max-width: 560px) {
-    .cards-grid { grid-template-columns: 1fr; }
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    flex: 1;
+    align-content: start;
   }
 
   .mod-card {
     position: relative;
     background: var(--card-bg);
     border: 2px solid var(--ink);
-    border-radius: 10px;
-    padding: 30px 24px 26px;
-    cursor: pointer;
+    border-radius: 12px;
     text-decoration: none;
     color: var(--ink);
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
-    transition: transform 0.3s cubic-bezier(.22,.68,0,1.3), box-shadow 0.3s, border-color 0.3s;
-    opacity: 0;
-    transform: translateY(26px);
     box-shadow: var(--shadow);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    opacity: 0;
+    transform: translateY(14px);
   }
 
   .mod-card.visible {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(.22,.68,0,1.15), box-shadow 0.3s, border-color 0.3s;
+    transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.18s ease, border-color 0.18s ease;
   }
 
-  /* Perforated top edge — tag motif */
-  .mod-card::before {
-    content: '';
-    position: absolute;
-    top: -1px; left: 0; right: 0;
-    height: 14px;
-    background-image: radial-gradient(circle 4px, var(--paper) 4px, transparent 4.5px);
-    background-size: 22px 14px;
-    background-position: 11px 0;
-    background-repeat: repeat-x;
-    z-index: 2;
-  }
-
-  .mod-card:hover {
-    transform: translateY(-6px);
-    border-color: var(--steel);
+  .mod-card:active {
+    transform: scale(0.94);
     box-shadow: var(--shadow-lg);
-  }
-
-  .tag-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 6px;
+    border-color: var(--steel);
   }
 
   .card-icon-wrap {
-    width: 56px; height: 56px;
+    width: 46%;
+    height: 46%;
+    max-width: 42px;
+    max-height: 42px;
     border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    border: 2px solid var(--ink);
-  }
-
-  .status-badge {
-    font-family: var(--mono);
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 9px;
-    border-radius: 3px;
-    border: 1.5px solid currentColor;
-    transform: rotate(-4deg);
-    transition: transform 0.25s;
-  }
-
-  .mod-card:hover .status-badge { transform: rotate(0deg) scale(1.04); }
-
-  .status-badge.live  { color: var(--steel-d); }
-  .status-badge.soon  { color: var(--ink-soft); border-color: var(--ink-soft); }
-
-  .card-title {
-    font-family: var(--display);
-    font-size: 1.18rem;
-    font-weight: 600;
-    color: var(--ink);
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-  }
-
-  .card-desc {
-    font-size: 0.82rem;
-    color: var(--ink-soft);
-    line-height: 1.55;
-    flex: 1;
-  }
-
-  .card-cta {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    font-family: var(--mono);
-    font-size: 0.74rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-top: 4px;
-    padding-top: 12px;
-    border-top: 1px dashed var(--line);
+    justify-content: center;
   }
 
-  .card-cta svg { transition: transform 0.2s; }
-  .mod-card:hover .card-cta svg { transform: translateX(4px); }
+  .card-icon-wrap svg { width: 100%; height: 100%; }
+
+  /* Placeholder letter icon */
+  .card-letter {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(0.95rem, 4.5vw, 1.3rem);
+    letter-spacing: 0.02em;
+  }
+
+  /* Card label (small caption below icon, minimal) */
+  .card-label {
+    position: absolute;
+    bottom: 4px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 0 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-icon-wrap { margin-top: -8px; }
 
   /* Ripple */
   .ripple {
@@ -342,41 +231,29 @@ const URLS = {
     border-radius: 50%;
     background: rgba(14,124,134,0.22);
     transform: scale(0);
-    animation: ripple-anim 0.6s linear;
+    animation: ripple-anim 0.5s linear;
     pointer-events: none;
     z-index: 3;
   }
 
   @keyframes ripple-anim {
-    to { transform: scale(4); opacity: 0; }
+    to { transform: scale(3.2); opacity: 0; }
   }
 
-  /* ─── Footer ─── */
+  /* ─── Footer: only credit line, bottom-right ─── */
   footer {
     text-align: center;
-    padding: 30px 24px;
-    border-top: 2px solid var(--ink);
-    margin-top: 52px;
+    padding: 14px 4px 6px;
     color: var(--ink-soft);
-    font-size: 0.78rem;
-    line-height: 1.8;
+    font-size: 0.68rem;
     font-family: var(--mono);
+    letter-spacing: 0.02em;
   }
 
-  footer strong { color: var(--steel-d); }
-
-  /* ─── Scrollbar ─── */
-  ::-webkit-scrollbar { width: 7px; }
-  ::-webkit-scrollbar-track { background: var(--paper2); }
-  ::-webkit-scrollbar-thumb { background: var(--ink-soft); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--steel); }
-
-  /* ─── Reduced motion ─── */
   @media (prefers-reduced-motion: reduce) {
     * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
   }
 
-  /* ─── Keyboard focus visibility ─── */
   a:focus-visible, button:focus-visible {
     outline: 3px solid var(--steel);
     outline-offset: 2px;
@@ -384,8 +261,6 @@ const URLS = {
 </style>
 </head>
 <body>
-
-<canvas id="particles"></canvas>
 
 <div class="shell">
 
@@ -402,134 +277,88 @@ const URLS = {
     <div class="clock-pill" id="clock">Loading…</div>
   </header>
 
-  <!-- ── Hero ── -->
-  <section class="hero">
-    <div class="hero-eyebrow"><span class="dot"></span>Fleet Operations Control</div>
-    <h1>Fleet Maintenance<br><span class="accent">Management System</span></h1>
-    <p class="hero-sub">A single point of entry to every consumption and overhaul module running across the fleet — pick a tag below to open it.</p>
-    <div class="hero-rule"></div>
-  </section>
-
-  <!-- ── Section Title ── -->
-  <div class="section-title">
-    <h2>Maintenance Modules</h2>
-    <p>// select a tag to open its tracking system</p>
-  </div>
+  <div class="hero-eyebrow"><span class="dot"></span>Fleet Operations Control</div>
 
   <!-- ── Module Cards ── -->
   <div class="cards-grid" id="cardsGrid">
 
-
     <!-- Filter Consumption -->
-    <a class="mod-card" href="#" onclick="navigate(event,'filterConsumption')">
-      <div class="tag-row">
-        <div class="card-icon-wrap" style="background:rgba(14,124,134,0.10)">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0E7C86" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
-          </svg>
-        </div>
-        <span class="status-badge live">Active</span>
+    <a class="mod-card" href="#" onclick="navigate(event,'filterConsumption')" aria-label="Filter Consumption">
+      <div class="card-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0E7C86" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+        </svg>
       </div>
-      <div>
-        <div class="card-title">Filter Consumption</div>
-      </div>
-      <div class="card-cta" style="color:#0E7C86">
-        Open Module
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
+      <span class="card-label">Filter</span>
     </a>
 
     <!-- Oil Consumption -->
-    <a class="mod-card" href="#" onclick="navigate(event,'oilConsumption')">
-      <div class="tag-row">
-        <div class="card-icon-wrap" style="background:rgba(255,159,28,0.12)">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E08600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            <path d="M8 12 c0-2.21 1.79-4 4-4" stroke-dasharray="2 2"/>
-          </svg>
-        </div>
-        <span class="status-badge live" style="color:#E08600">Active</span>
+    <a class="mod-card" href="#" onclick="navigate(event,'oilConsumption')" aria-label="Oil Consumption">
+      <div class="card-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#E08600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
       </div>
-      <div>
-        <div class="card-title">Oil Consumption</div>
-      </div>
-      <div class="card-cta" style="color:#E08600">
-        Open Module
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
+      <span class="card-label">Oil</span>
     </a>
 
     <!-- Battery Consumption -->
-    <a class="mod-card" href="#" onclick="navigate(event,'batteryConsumption')">
-      <div class="tag-row">
-        <div class="card-icon-wrap" style="background:rgba(224,72,62,0.10)">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E0483E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="7" width="18" height="11" rx="2"/>
-            <path d="M22 11v3M7 12h10"/>
-            <path d="M11 10v4"/>
-          </svg>
-        </div>
-        <span class="status-badge soon">Active</span>
+    <a class="mod-card" href="#" onclick="navigate(event,'batteryConsumption')" aria-label="Battery Consumption">
+      <div class="card-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#E0483E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="18" height="11" rx="2"/>
+          <path d="M22 11v3M7 12h10"/>
+          <path d="M11 10v4"/>
+        </svg>
       </div>
-      <div>
-        <div class="card-title">Battery Consumption</div>
-      </div>
-      <div class="card-cta" style="color:#E0483E">
-        Open Module
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
+      <span class="card-label">Battery</span>
     </a>
 
     <!-- Tyre Consumption -->
-    <a class="mod-card" href="#" onclick="navigate(event,'tyreConsumption')">
-      <div class="tag-row">
-        <div class="card-icon-wrap" style="background:rgba(22,32,46,0.08)">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16202E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <circle cx="12" cy="12" r="4"/>
-            <line x1="12" y1="2" x2="12" y2="8"/>
-            <line x1="12" y1="16" x2="12" y2="22"/>
-            <line x1="2" y1="12" x2="8" y2="12"/>
-            <line x1="16" y1="12" x2="22" y2="12"/>
-          </svg>
-        </div>
-        <span class="status-badge soon">Active</span>
+    <a class="mod-card" href="#" onclick="navigate(event,'tyreConsumption')" aria-label="Tyre Consumption">
+      <div class="card-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#16202E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="12" y1="2" x2="12" y2="8"/>
+          <line x1="12" y1="16" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="8" y2="12"/>
+          <line x1="16" y1="12" x2="22" y2="12"/>
+        </svg>
       </div>
-      <div>
-        <div class="card-title">Tyre Consumption</div>
-      </div>
-      <div class="card-cta" style="color:#16202E">
-        Open Module
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
+      <span class="card-label">Tyre</span>
     </a>
 
     <!-- Engine Overhauling -->
-    <a class="mod-card" href="#" onclick="navigate(event,'engineOverhauling')">
-      <div class="tag-row">
-        <div class="card-icon-wrap" style="background:rgba(255,159,28,0.12)">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF9F1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-        </div>
-        <span class="status-badge soon">Active</span>
+    <a class="mod-card" href="#" onclick="navigate(event,'engineOverhauling')" aria-label="Engine Overhauling">
+      <div class="card-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FF9F1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
       </div>
-      <div>
-        <div class="card-title">Engine Overhauling</div>
+      <span class="card-label">Engine</span>
+    </a>
+
+    <!-- Vehicle Status (new, no dedicated icon → placeholder letters) -->
+    <a class="mod-card" href="#" onclick="navigate(event,'vehicleStatus')" aria-label="Vehicle Status">
+      <div class="card-icon-wrap" style="background:rgba(14,124,134,0.10); border-radius:10px;">
+        <span class="card-letter" style="color:#0E7C86">VS</span>
       </div>
-      <div class="card-cta" style="color:#E08600">
-        Open Module
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <span class="card-label">Vehicle Status</span>
+    </a>
+
+    <!-- Mechanic Working History (new, no dedicated icon → placeholder letters) -->
+    <a class="mod-card" href="#" onclick="navigate(event,'mechanicHistory')" aria-label="Mechanic Working History">
+      <div class="card-icon-wrap" style="background:rgba(224,72,62,0.10); border-radius:10px;">
+        <span class="card-letter" style="color:#E0483E">MH</span>
       </div>
+      <span class="card-label">Mechanic History</span>
     </a>
 
   </div>
 
   <!-- ── Footer ── -->
-  <footer>
-    <strong>Fleet Maintenance Management System</strong> &mdash; Version 1.0<br>
-    &copy; 2026 Concept and Property of <strong>BIIC ROM</strong>. All rights reserved.
-  </footer>
+  <footer>A concept and property of ROM</footer>
 
 </div><!-- /shell -->
 
@@ -564,102 +393,31 @@ function navigate(e, key) {
   const rect = card.getBoundingClientRect();
   const ripple = document.createElement('span');
   ripple.className = 'ripple';
-  const size = Math.max(rect.width, rect.height) * 1.5;
+  const size = Math.max(rect.width, rect.height) * 1.3;
   ripple.style.cssText = `
     width:${size}px; height:${size}px;
-    left:${e.clientX - rect.left - size/2}px;
-    top:${e.clientY - rect.top - size/2}px;
+    left:${(e.clientX || rect.left + rect.width/2) - rect.left - size/2}px;
+    top:${(e.clientY || rect.top + rect.height/2) - rect.top - size/2}px;
   `;
   card.appendChild(ripple);
-  setTimeout(() => ripple.remove(), 620);
+  setTimeout(() => ripple.remove(), 520);
 }
 
-// ─── Intersection Observer (card reveal) ─────────────────
+// ─── Reveal cards ─────────────────────────────────────────
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
       const el = entry.target;
-      setTimeout(() => {
-        el.classList.add('visible');
-      }, parseInt(el.dataset.delay || 0));
+      setTimeout(() => { el.classList.add('visible'); }, parseInt(el.dataset.delay || 0));
       observer.unobserve(el);
     }
   });
-}, { threshold: 0.15 });
+}, { threshold: 0.1 });
 
 document.querySelectorAll('.mod-card').forEach((c, i) => {
-  c.dataset.delay = i * 80;
+  c.dataset.delay = i * 50;
   observer.observe(c);
 });
-
-// ─── Particles (subtle dust motes for bright background) ─
-(function () {
-  const canvas = document.getElementById('particles');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) return;
-
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-
-  function Particle() {
-    this.reset();
-  }
-
-  Particle.prototype.reset = function () {
-    this.x = Math.random() * W;
-    this.y = Math.random() * H;
-    this.r = Math.random() * 1.4 + 0.4;
-    this.vx = (Math.random() - 0.5) * 0.22;
-    this.vy = (Math.random() - 0.5) * 0.22;
-    this.a = Math.random() * 0.22 + 0.05;
-    const steel = Math.random() > 0.5;
-    this.color = steel ? `rgba(14,124,134,${this.a})` : `rgba(22,32,46,${this.a})`;
-  };
-
-  Particle.prototype.update = function () {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
-  };
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => {
-      p.update();
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.fill();
-    });
-
-    // Faint connecting lines, subtle on bright background
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 100) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(22,32,46,${0.035 * (1 - dist / 100)})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
-      }
-    }
-    requestAnimationFrame(draw);
-  }
-
-  resize();
-  for (let i = 0; i < 55; i++) particles.push(new Particle());
-  window.addEventListener('resize', resize);
-  draw();
-})();
 </script>
 </body>
 </html>
