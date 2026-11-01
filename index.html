@@ -294,13 +294,22 @@ const URLS = {
     </a>
 
     <!-- Oil Consumption -->
+       <a class="mod-card" href="#" onclick="navigate(event,'oilConsumption2')" aria-label="Oil Consumption">
+      <div class="card-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#E08600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </div>
+      <span class="card-label">Oil (New)</span>
+    </a>
+       
     <a class="mod-card" href="#" onclick="navigate(event,'oilConsumption')" aria-label="Oil Consumption">
       <div class="card-icon-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="#E08600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
       </div>
-      <span class="card-label">Oil</span>
+      <span class="card-label">Oil (Old)</span>
     </a>
 
     <!-- Battery Consumption -->
@@ -349,20 +358,13 @@ const URLS = {
     </a>
 
     <!-- Mechanic Working History (new, no dedicated icon → placeholder letters) -->
-    <a class="mod-card" href="#" onclick="navigate(event,'DieselAdmin')" aria-label="Mechanic Working History">
+    <a class="mod-card" href="#" onclick="navigate(event,'DieselAdmin')" aria-label="Diesel Admin">
       <div class="card-icon-wrap" style="background:rgba(224,72,62,0.10); border-radius:10px;">
-        <span class="card-letter" style="color:#E0483E">MH</span>
+        <span class="card-letter" style="color:#E0483E">DA</span>
       </div>
       <span class="card-label">Diesel Admin</span>
     </a>
-        <a class="mod-card" href="#" onclick="navigate(event,'oilConsumption2')" aria-label="Oil Consumption">
-      <div class="card-icon-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#E08600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
-      </div>
-      <span class="card-label">Oil</span>
-    </a>
+        
 
 
   </div>
